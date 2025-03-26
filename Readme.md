@@ -21,8 +21,8 @@ Before running this project, you need the following tools and software:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/sahilsao/Northwind.git
-cd Northwind
+git clone https://github.com/sahilsao/BlazorBlog.git
+cd BlazorBlog
 ```
 ### 2. Set Up blogs Database
 
