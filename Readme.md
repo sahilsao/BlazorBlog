@@ -1,13 +1,12 @@
-# 🚀 Blazor Web App with MudBlazor and Northwind DB
+# 🚀 Blazor Web App with MudBlazor
 
-Welcome to this Blazor Web App! This project demonstrates how to create a modern Blazor WebAssembly app with a responsive UI powered by **MudBlazor** and connected to a **SQL Server** database (Northwind DB).
+Welcome to this Blazor Web App! This project demonstrates how to create a modern Blazor WebAssembly app with a responsive UI powered by **MudBlazor** and connected to a **SQL Server** database.
 
 ## 🛠️ Features
 
 - **Blazor WebAssembly**: A client-side web app framework powered by .NET.
 - **MudBlazor**: A Material Design component library for Blazor.
-- **Northwind DB**: A popular demo database for learning SQL and database management.
-- **SQL Server**: The back-end database that holds the Northwind data.
+- **SQL Server**: The back-end database that holds the blogs db data.
 
 ## 📦 Prerequisites
 
@@ -16,7 +15,6 @@ Before running this project, you need the following tools and software:
 - [Visual Studio 2022](https://visualstudio.microsoft.com/), [Rider](https://www.jetbrains.com/rider/), [VSCode](https://code.visualstudio.com/) (with **Blazor WebAssembly** and **SQL Server** components)
 - [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
 - [MudBlazor](https://mudblazor.com/) library installed via NuGet
-- The [Northwind Database](https://github.com/microsoft/sql-server-samples/tree/master/samples/databases/northwind-pubs) installed in SQL Server
 
 ## 📝 Setup Instructions
 
@@ -26,16 +24,13 @@ Before running this project, you need the following tools and software:
 git clone https://github.com/sahilsao/Northwind.git
 cd Northwind
 ```
-### 2. Set Up Northwind Database
+### 2. Set Up blogs Database
 
-Download Northwind DB: [click here](https://github.com/microsoft/sql-server-samples/tree/master/samples/databases/northwind-pubs)
-
-Restore Northwind DB in SQL Server: Use the instnwnd.sql script file and execute it on your SQL Server instance.
 Update the appsettings.Development.json file with your SQL Server connection string.
 ```json
 {
   "ConnectionStrings": {
-    "NorthwindConnection": "Server=your_server;Database=Northwind;User Id=your_username;Password=your_password;Integrated Security=True;Trust Server Certificate=True;Trusted_Connection=True;MultipleActiveResultSets=true;"
+    "BlogDataContext": "Server=DESKTOP-2PGN845\\SQLEXPRESS;Database=Blogs;Integrated Security=True;Trust Server Certificate=True;Trusted_Connection=True;MultipleActiveResultSets=true;User Id=sa; Password=sa;"
   }
 }
 ```
@@ -66,8 +61,8 @@ Visit http://localhost:5000 **(your port must be different)** in your browser an
 
 ## 📊 Project Structure
 
-- Pages: Contains all the Blazor pages (UI components).
-- Data: Data models and services (e.g., NorthwindService.cs for DB interaction).
+- BlazorBlog.Client: Contains all the Blazor pages (UI components).
+- BlazorBlog.Server: Domain, Persistence and Controllers for DB & API interaction.
 - wwwroot: Static files like CSS, JS, and images.
 - Shared: Common UI components shared across pages.
 - MudBlazor Components: Custom MudBlazor components and styling.
@@ -77,7 +72,6 @@ Visit http://localhost:5000 **(your port must be different)** in your browser an
 - Blazor WebAssembly: Build interactive web apps using C#.
 - MudBlazor: A Material Design library for Blazor apps.
 - SQL Server: A relational database management system.
-- Northwind Database: A sample database for understanding business operations.
 
 ## 💻 Contribution
 
