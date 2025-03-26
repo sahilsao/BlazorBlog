@@ -63,9 +63,7 @@ Visit http://localhost:5000 **(your port must be different)** in your browser an
 
 - BlazorBlog.Client: Contains all the Blazor pages (UI components).
 - BlazorBlog.Server: Domain, Persistence and Controllers for DB & API interaction.
-- wwwroot: Static files like CSS, JS, and images.
-- Shared: Common UI components shared across pages.
-- MudBlazor Components: Custom MudBlazor components and styling.
+- BlazorBlog.Shared: Common useful data interactions, validators, commands and constants shared across pages.
 
 ## 🔧 Technologies Used
 
