@@ -34,7 +34,25 @@ Update the appsettings.Development.json file with your SQL Server connection str
   }
 }
 ```
-### 3. Install MudBlazor or MudBlazor Template
+- Open terminal & Install EF Core Tools
+
+```bash
+dotnet tool install --global dotnet-ef
+```
+- Confirm dotnet-ef is installed by running
+
+```bash
+dotnet ef --version.
+```
+- Create a Migration
+```bash
+dotnet ef migrations add InitialCreate
+```
+- Apply the Migration to the Database
+```bash
+dotnet ef database update
+```
+### 3. Install MudBlazor or MudBlazor Template (if you want to make changes)
 
 Install MudBlazor using NuGet:
 ```bash
