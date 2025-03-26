@@ -1,0 +1,72 @@
+﻿@using BlazorBlog.Shared.Blogs
+@attribute [Route(Routes.Pages.Blogs.Index)]
+
+<PageTitle>Blogs</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Blogs</MudText>
+<MudText Typo="Typo.body1" Class="mb-8">This component demonstrates fetching data from the server.</MudText>
+
+@if (_blogs == null)
+{
+	<div>Loading...</div>
+}
+else
+{
+	<MudButton Href="@Routes.Pages.Blogs.Add" Color="Color.Primary" Variant="Variant.Filled">Add Blogs</MudButton>
+
+	<MudTable Items="@_blogs" Hover="true" SortLabel="Sort By" Elevation="0" AllowUnsorted="false">
+		<HeaderContent>
+			<MudTh>
+				<MudTableSortLabel InitialDirection="SortDirection.Ascending"
+								   SortBy="new Func<BlogDto, object>(x => x.Id)">Blog Id</MudTableSortLabel>
+			</MudTh>
+			<MudTh>
+				<MudTableSortLabel SortBy="new Func<BlogDto, object>(x => x.Title ?? string.Empty)">
+					Title
+				</MudTableSortLabel>
+			</MudTh>
+			<MudTh>
+				<MudTableSortLabel SortBy="new Func<BlogDto, object>(x => x.Description ?? string.Empty)">
+					Description
+				</MudTableSortLabel>
+			</MudTh>
+			<MudTh>
+
+			</MudTh>
+		</HeaderContent>
+		<RowTemplate>
+			<MudTd DataLabel="Employees Id">@context.Id</MudTd>
+			<MudTd DataLabel="First Name">@context.Title</MudTd>
+			<MudTd DataLabel="Last Name">@context.Description</MudTd>
+			<MudTd><MudButton Color=Color.Primary Variant=Variant.Outlined OnClick="@(() => GoToPostsPage(context))">Posts</MudButton> <MudButton Color=Color.Secondary Variant=Variant.Outlined OnClick="@(() => GoToEditPage(context))">Edit</MudButton></MudTd>
+		</RowTemplate>
+		<PagerContent>
+			<MudTablePager PageSizeOptions="new int[] { 50, 100 }" />
+		</PagerContent>
+	</MudTable>
+}
+
+@code {
+	private List<BlogDto>? _blogs;
+
+	[Inject] public HttpClient HttpClient { get; set; } = null!;
+	[Inject] public NavigationManager NavigationManager { get; set; } = null!;
+
+	protected override async Task OnInitializedAsync()
+	{
+		_blogs = await HttpClient.GetFromJsonAsync<List<BlogDto>>(Routes.Api.Blogs.GetAll);
+	}
+
+	private void GoToPostsPage(BlogDto blog)
+	{
+		var route = Routes.Pages.BlogPosts.Index.Format(blog.Id);
+		NavigationManager.NavigateTo(route);
+	}
+
+	private void GoToEditPage(BlogDto blog)
+	{
+		var route = Routes.Pages.Blogs.Edit.Format(blog.Id);
+		NavigationManager.NavigateTo(route);
+	}
+
+}

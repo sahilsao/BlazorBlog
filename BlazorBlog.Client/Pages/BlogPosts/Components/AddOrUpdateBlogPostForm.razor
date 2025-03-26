@@ -1,0 +1,53 @@
+﻿@using BlazorBlog.Shared.Blogs.Commands
+<EditForm Model="@Command" OnValidSubmit="@OnValidSubmitAsync">
+    <FluentValidationValidator/>
+
+    <MudGrid>
+        <MudItem xs="4">
+            <MudTextField Label="First Name" @bind-Value="Command.Title" />
+            <ValidationMessage For="() => Command.Title" style="color: red" />
+        </MudItem>
+
+        <MudItem xs="4">
+            <MudTextField Label="Last Name" @bind-Value="Command.Content" />
+            <ValidationMessage For="() => Command.Content" style="color: red" />
+        </MudItem>
+
+        <!-- Submit Button -->
+        <MudItem xs="4">
+            <MudButton Variant="Variant.Filled" Color="Color.Success" ButtonType="ButtonType.Submit">
+                Submit
+            </MudButton>
+
+            <MudButton Variant="Variant.Outlined" Color="Color.Error" Href="@Routes.Pages.BlogPosts.Index.Format(BlogId)">
+                Cancel
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+</EditForm>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public AddOrUpdateBlogPostCommand Command { get; set; } = null!;
+    private bool IsEditingExistingBlogPost => Command.Id != null;
+
+    [Parameter, EditorRequired] public Guid BlogId { get; set; }
+
+    [Inject] public HttpClient HttpClient { get; set; } = null!;
+    [Inject] public NavigationManager NavigationManager { get; set; } = null!;
+
+    private async Task OnValidSubmitAsync()
+    {
+        HttpResponseMessage response;
+
+        if (IsEditingExistingBlogPost)
+            response = await HttpClient.PutAsJsonAsync(Routes.Api.BlogPosts.Update.Format(BlogId), Command);
+        else
+            response = await HttpClient.PostAsJsonAsync(Routes.Api.BlogPosts.Add.Format(BlogId), Command);
+
+        if (response.IsSuccessStatusCode)
+            NavigationManager.NavigateTo(Routes.Pages.BlogPosts.Index.Format(BlogId));
+    }
+
+}

@@ -1,0 +1,74 @@
+﻿@using BlazorBlog.Shared.Blogs
+@using Humanizer
+@attribute [Route(Routes.Pages.BlogPosts.Index)]
+
+<PageTitle>Blog Posts</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Edit Post</MudText>
+<MudText Typo="Typo.body1" Class="mb-8">This component edit posts data on the server.</MudText>
+
+<MudButton Variant="Variant.Outlined" Color="Color.Error" Href="@Routes.Pages.BlogPosts.Add.Format(BlogId)">
+	Add Post
+</MudButton>
+
+@if (_posts == null)
+{
+	<div>Loading...</div>
+}
+else
+{
+	<MudTable Items="@_posts" Hover="true" SortLabel="Sort By" Elevation="0" AllowUnsorted="false">
+		<HeaderContent>
+			<MudTh>
+				<MudTableSortLabel SortBy="new Func<BlogPostDto, object>(x => x.Title ?? string.Empty)">
+					Title
+				</MudTableSortLabel>
+			</MudTh>
+			<MudTh>
+				<MudTableSortLabel SortBy="new Func<BlogPostDto, object>(x => x.CreatedAt.ToString() ?? string.Empty)">
+					CreatedAt
+				</MudTableSortLabel>
+			</MudTh>
+			<MudTh>
+
+			</MudTh>
+		</HeaderContent>
+		<RowTemplate>
+			<MudTd DataLabel="Employees Id">@context.Title</MudTd>
+			<MudTd DataLabel="First Name">@context.CreatedAt.Humanize()</MudTd>
+			<MudTd>
+				<MudButton Color=Color.Secondary Variant=Variant.Outlined OnClick="@(() => GoToViewPage(context))">View</MudButton> 
+				<MudButton Color=Color.Error Variant=Variant.Outlined OnClick="@(() => GoToEditPage(context))">Edit</MudButton></MudTd>
+		</RowTemplate>
+		<PagerContent>
+			<MudTablePager PageSizeOptions="new int[] { 50, 100 }" />
+		</PagerContent>
+	</MudTable>
+}
+
+@code {
+	private List<BlogPostDto>? _posts;
+
+	[Parameter] public Guid BlogId { get; set; }
+
+	[Inject] public HttpClient HttpClient { get; set; } = null!;
+	[Inject] public NavigationManager NavigationManager { get; set; } = null!;
+
+	protected override async Task OnInitializedAsync()
+	{
+		_posts = await HttpClient.GetFromJsonAsync<List<BlogPostDto>>(Routes.Api.BlogPosts.GetAll.Format(BlogId));
+	}
+
+	private void GoToViewPage(BlogPostDto post)
+	{
+		var route = Routes.Pages.BlogPosts.View.Format(BlogId, post.Id);
+		NavigationManager.NavigateTo(route);
+	}
+
+	private void GoToEditPage(BlogPostDto post)
+	{
+		var route = Routes.Pages.BlogPosts.Edit.Format(BlogId, post.Id);
+		NavigationManager.NavigateTo(route);
+	}
+
+}

@@ -1,0 +1,15 @@
+﻿@using BlazorBlog.Shared.Blogs.Commands
+@using BlazorBlog.Client.Pages.BlogPosts.Components
+@attribute [Route(Routes.Pages.BlogPosts.Add)]
+<PageTitle>Add Post</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Add Post</MudText>
+<MudText Typo="Typo.body1" Class="mb-8">This component adds new posts data on the server.</MudText>
+
+<AddOrUpdateBlogPostForm BlogId="BlogId" Command="new AddOrUpdateBlogPostCommand()"/>
+
+@code {
+
+    [Parameter] public Guid BlogId { get; set; }
+
+}
